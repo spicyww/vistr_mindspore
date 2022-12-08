@@ -15,8 +15,8 @@
 """vistr decoder"""
 from mindspore import nn, ops
 from mindspore.common.initializer import HeUniform
-from msvideo.utils.init_weight import UniformBias
-from msvideo.models.layers.multihead_attention import MultiheadAttention
+from src.utils.init_weight import UniformBias
+from src.models.layers.multihead_attention import MultiheadAttention
 
 
 def _get_activation_fn(activation):

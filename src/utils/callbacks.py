@@ -21,7 +21,7 @@ import numpy as np
 import mindspore as ms
 from mindspore import save_checkpoint
 from mindspore.train.callback import Callback
-from msvideo.utils.check_param import Rel, Validator as validator
+from src.utils.check_param import Rel, Validator as validator
 
 
 class EvalLossMonitor(Callback):

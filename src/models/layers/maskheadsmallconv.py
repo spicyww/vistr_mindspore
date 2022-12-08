@@ -18,7 +18,7 @@ from mindspore import nn, ops
 from mindspore.ops import operations as P
 from mindspore.common import initializer as msinit
 from mindspore.common.initializer import initializer, HeUniform
-from msvideo.models.layers.deform_conv2 import DeformConv2d
+from src.models.layers.dcn.deform_conv import TorchDeformConv
 
 
 class MaskHeadSmallConv(nn.Cell):
@@ -74,8 +74,8 @@ class MaskHeadSmallConv(nn.Cell):
         self.gn5 = nn.GroupNorm(8, inter_dims[4])
         self.relu = P.ReLU()
         self.dim = dim
-        self.dcn = DeformConv2d(inter_dims[3], inter_dims[4], 3,
-                                pad_mode='pad', padding=1, has_bias=True, modulation=False)
+        self.conv_offset = nn.Conv2d(inter_dims[3], 18, 1, has_bias=True)
+        self.dcn = TorchDeformConv(inter_dims[3], inter_dims[4], 3, padding=1)
 
         self.adapter1 = nn.Conv2d(
             fpn_dims[0], inter_dims[1], 1, has_bias=True, weight_init='normal')
@@ -143,7 +143,9 @@ class MaskHeadSmallConv(nn.Cell):
         x = cur_fpn + interpolate(x)
 
         # dcn for the last layer
-        x = self.dcn(x)
+        offset = self.conv_offset(x)
+        x = self.dcn(x, offset)
+        a = x.asnumpy()
         x = self.gn5(x)
         x = self.relu(x)
         return x

@@ -19,13 +19,14 @@ from mindspore import nn, ops, Tensor, Parameter
 from mindspore.ops import operations as P
 from mindspore.common.initializer import HeUniform, initializer
 
-from msvideo.utils.init_weight import UniformBias
-from msvideo.models.layers import resnet
-from msvideo.models.layers.mlp import MLP
-from msvideo.models.layers.vistr_encoder import TransformerEncoder, TransformerEncoderLayer
-from msvideo.models.layers.vistr_decoder import TransformerDecoder, TransformerDecoderLayer
-from msvideo.models.layers import maskheadsmallconv
-from msvideo.models.layers import mh_attention_map
+from src.utils.init_weight import UniformBias
+from src.models.layers import resnet
+from src.models.layers.mlp import MLP
+from src.models.layers.vistr_encoder import TransformerEncoder, TransformerEncoderLayer
+from src.models.layers.vistr_decoder import TransformerDecoder, TransformerDecoderLayer
+from src.models.layers import maskheadsmallconv
+from src.models.layers import mh_attention_map
+from src.utils.class_factory import ClassFactory, ModuleType
 
 __all__ = ['VistrCom', 'GroupNorm3d']
 
@@ -74,6 +75,7 @@ class GroupNorm3d(nn.Cell):
         return output
 
 
+@ClassFactory.register(ModuleType.MODEL)
 class VistrCom(nn.Cell):
     """
     Vistr Architecture.
@@ -194,25 +196,22 @@ class VistrCom(nn.Cell):
         self.mask_head = maskheadsmallconv.MaskHeadSmallConv(hidden_dim + nhead,
                                                              [1024, 512, 256],
                                                              hidden_dim)
-        self.insmask_head = nn.SequentialCell([nn.Conv3d(24, 12, 3,
+        self.insmask_head = nn.SequentialCell([nn.Conv3d(24, 12, 5,
                                                          pad_mode='pad',
                                                          has_bias=True,
-                                                         padding=(1, 1, 2, 2, 2, 2),
-                                                         dilation=(1, 2, 2)),
+                                                         padding=2),
                                                GroupNorm3d(4, 12),
                                                nn.ReLU(),
-                                               nn.Conv3d(12, 12, 3,
+                                               nn.Conv3d(12, 12, 5,
                                                          pad_mode='pad',
                                                          has_bias=True,
-                                                         padding=(1, 1, 2, 2, 2, 2),
-                                                         dilation=(1, 2, 2)),
+                                                         padding=2),
                                                GroupNorm3d(4, 12),
                                                nn.ReLU(),
-                                               nn.Conv3d(12, 12, 3,
+                                               nn.Conv3d(12, 12, 5,
                                                          pad_mode='pad',
                                                          has_bias=True,
-                                                         padding=(1, 1, 2, 2, 2, 2),
-                                                         dilation=(1, 2, 2)),
+                                                         padding=2),
                                                GroupNorm3d(4, 12),
                                                nn.ReLU(),
                                                nn.Conv3d(12, 1, 1,

@@ -20,7 +20,7 @@ import numpy as np
 from PIL import Image
 import cv2
 import mindspore.dataset.transforms.py_transforms as trans
-from msvideo.utils.class_factory import ClassFactory, ModuleType
+from src.utils.class_factory import ClassFactory, ModuleType
 
 
 @ClassFactory.register(ModuleType.PIPELINE)
@@ -171,13 +171,13 @@ class PhotometricDistort(trans.PyTensorOperation):
         imgs = []
         for img in clip:
             img = np.asarray(img).astype('float32')
-            img, boxes, masks, resize_shape = self.rand_brightness(img, boxes, masks, resize_shape)
+            img, boxes, masks, resize_shape, label, valid = self.rand_brightness(img, boxes, masks, resize_shape, label, valid)
             if rand.randint(2):
                 distort = Compose(self.pd[:-1])
             else:
                 distort = Compose(self.pd[1:])
-            img, boxes, masks, resize_shape = distort(img, boxes, masks, resize_shape)
-            img, boxes, masks, resize_shape = self.rand_light_noise(img, boxes, masks, resize_shape)
+            img, boxes, masks, resize_shape, label, valid = distort(img, boxes, masks, resize_shape, label, valid)
+            img, boxes, masks, resize_shape, label, valid = self.rand_light_noise(img, boxes, masks, resize_shape, label, valid)
             imgs.append(Image.fromarray(img.astype('uint8')))
         return imgs, boxes, masks, resize_shape, label, valid
 
@@ -519,7 +519,7 @@ class ConcatBlank(trans.PyTensorOperation):
         blank_valid = np.zeros((shape2), dtype=np.int32)
         scaled_valid = np.concatenate((valid, blank_valid), axis=0)
 
-        return clip, boxes, masks, resize_shape, label, scaled_label, scaled_valid
+        return clip, boxes, masks, resize_shape, scaled_label, scaled_valid
 
 
 def make_coco_transforms():

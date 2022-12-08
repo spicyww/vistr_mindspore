@@ -56,6 +56,7 @@ To run the python scripts in the repository, you need to prepare the environment
     -   scikit-learn == 1.0.2
     -   scipy == 1.7.3
     -   pycocotools == 2.0
+    -   pytorch == 1.12.1
 - For more information, please check the resources below：
     - [MindSpore tutorials](https://www.mindspore.cn/tutorials/en/master/index.html)
     - [MindSpore Python API](https://www.mindspore.cn/docs/en/master/index.html)
@@ -131,14 +132,14 @@ The infer log can be viewed in `./eval_result.log`
 | ------------------- | ---------------------------|
 | Model Version       | VisTR_r50                  |
 | Resource            | 1x RTX 3090 24GB           |
-| Uploaded Date       | 21/09/2022 (day/month/year)|
+| Uploaded Date       | 7/12/2022 (day/month/year)|
 | MindSpore Version   | 1.8.1                      |
 | Training Dataset    | YouTube-VIS                |
 | Evaluation Dataset  | YouTube-VIS                |
 | Training Parameters | epoch=18, batch_size=1     |
 | Optimizer           | Adam                       |
 | Loss Function       | L1Loss,SigmoidFocalLoss,DiceLoss,CrossEntroyLoss          |
-| Train Performance   |       mask AP:             |
+| Train Performance   |       mask AP: 35.814%            |
 
 # [Citation](#contents)
 ```

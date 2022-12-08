@@ -15,7 +15,7 @@
 """vistr mlp"""
 from mindspore import nn, ops
 from mindspore.common.initializer import HeUniform
-from msvideo.utils.init_weight import UniformBias
+from src.utils.init_weight import UniformBias
 
 
 class MLP(nn.Cell):

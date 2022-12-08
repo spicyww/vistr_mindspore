@@ -18,7 +18,8 @@ VisTR loss
 import numpy as np
 import mindspore as ms
 from mindspore import ops, Tensor, nn, ms_function
-from msvideo.models.layers import bbox
+from src.models.layers import bbox
+from src.utils.class_factory import ClassFactory, ModuleType
 
 __all__ = ['DiceLoss', 'SigmoidFocalLoss', 'SetCriterion']
 
@@ -86,6 +87,7 @@ class SigmoidFocalLoss(nn.Cell):
         return loss.mean(1).sum() / num_boxes
 
 
+@ClassFactory.register(ModuleType.LOSS)
 class SetCriterion(nn.LossBase):
     r"""vistr loss contains loss_labels, loss_masks and loss_boxes.
     Args:
@@ -116,7 +118,7 @@ class SetCriterion(nn.LossBase):
         self.reduce_sum = ops.ReduceSum()
         self.expand_dims = ops.ExpandDims()
         self.reshape = ops.Reshape()
-        self.Generalized_Box_Iou = bbox.Generalized_Box_Iou()
+        self.Generalized_Box_Iou = bbox.GeneralizedBoxIou()
         self.abs = ops.Abs()
         self.cast = ops.Cast()
         # losses

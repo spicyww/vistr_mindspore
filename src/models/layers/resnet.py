@@ -16,7 +16,7 @@
 
 from typing import Type, Union, List, Optional
 from mindspore import nn
-from msvideo.models.layers.blocks import ConvNormActivation
+from src.models.layers.blocks import ConvNormActivation
 
 
 __all__ = [

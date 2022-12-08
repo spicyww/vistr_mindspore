@@ -16,8 +16,8 @@
 import mindspore
 from mindspore import nn, Tensor, ops
 from mindspore.ops import operations as P
-from msvideo.utils.bbox import MultiIou
-from msvideo.utils.hungarian import Hungarian
+from src.models.layers.bbox import MultiIou
+from src.models.layers.hungarian import Hungarian
 
 
 class HungarianMatcher(nn.Cell):

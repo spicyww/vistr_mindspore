@@ -16,6 +16,7 @@
 from typing import Optional
 import mindspore
 from mindspore import nn, ops, Tensor
+from mindspore.ops import stop_gradient
 from mindspore.common.initializer import initializer, XavierUniform, Zero
 
 
@@ -47,23 +48,24 @@ class MHAttentionMsp(nn.Cell):
         self.hidden_dim = hidden_dim
         self.dropout = nn.Dropout(1-dropout)
         self.softmax = ops.Softmax(axis=-1)
-
+        self.einsum = ops.Einsum(equation="bqnc,bnchw->bqnhw")
         self.cast = ops.Cast()
         self.transpose = ops.Transpose()
         self.reduce = ops.ReduceSum(keep_dims=True)
-
+        # self.conv2d = nn.Conv2d(query_dim, hidden_dim, 1, pad_mode='pad',
+        #                         has_bias=True, bias_init='zeros')
         self.conv2d = nn.Conv2d(query_dim, hidden_dim, (1, 1), has_bias=True)
 
         self.q_linear = nn.Dense(query_dim, hidden_dim, has_bias=bias)
-        self.k_linear = nn.Dense(query_dim, hidden_dim, has_bias=bias)
+        # self.k_linear = nn.Dense(query_dim, hidden_dim, has_bias=bias)
 
         self.q_linear.bias = initializer(Zero(), [hidden_dim])
-        self.k_linear.bias = initializer(Zero(), [hidden_dim])
+        # self.k_linear.bias = initializer(Zero(), [hidden_dim])
 
         self.q_linear.weight = initializer(
             XavierUniform(), self.q_linear.weight.shape, mindspore.float32)
-        self.k_linear.weight = initializer(
-            XavierUniform(), self.k_linear.weight.shape, mindspore.float32)
+        # self.k_linear.weight = initializer(
+        #     XavierUniform(), self.k_linear.weight.shape, mindspore.float32)
         self.normalize_fact = (hidden_dim / self.num_heads) ** -0.5
 
     def construct(self, q, k, mask: Optional[Tensor] = None):
@@ -75,16 +77,16 @@ class MHAttentionMsp(nn.Cell):
         kh = k.view((k.shape[0], self.num_heads, self.hidden_dim // self.num_heads,
                      k.shape[-2], k.shape[-1]))
 
-        # Use matrix calculation to achieve the effect of ops.einsum
-        qh_weights = qh * self.normalize_fact
-        qh_weights = qh_weights.expand_dims(0)
-        kh_weights = self.transpose(kh, (3, 4, 0, 1, 2))
+        # 用矩阵计算来实现einsum的效果
+        # qh_weights = qh * self.normalize_fact
+        # qh_weights = qh_weights.expand_dims(0)
+        # kh_weights = self.transpose(kh, (3, 4, 0, 1, 2))
 
-        weights = qh_weights * kh_weights
-        weights = self.transpose(weights, (4, 2, 3, 0, 1))
-        weights = self.reduce(weights, 0)
+        # weights = qh_weights * kh_weights
+        # weights = self.transpose(weights, (4, 2, 3, 0, 1))
+        # weights = self.reduce(weights, 0)
 
-        # weights = self.einsum((qh * self.normalize_fact, kh))
+        weights = self.einsum((qh * self.normalize_fact, kh))
         shape = weights.shape
 
         mask = self.cast(mask, mindspore.bool_)
@@ -95,4 +97,5 @@ class MHAttentionMsp(nn.Cell):
         weights = self.softmax(weights_fla)
         weights = self.reshape(self.softmax(weights_fla), shape)
         weights = self.dropout(weights)
+        # weights = stop_gradient(weights)
         return weights

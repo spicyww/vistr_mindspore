@@ -15,3 +15,4 @@
 """ Init video transforms """
 
 from .ytvos_transform import *
+from .cocopolytomask import *

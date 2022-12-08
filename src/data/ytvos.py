@@ -19,11 +19,11 @@ import numpy as np
 from PIL import Image
 from mindspore import ops
 from pycocotools.ytvos import YTVOS
-from msvideo.data.meta import Dataset
-from msvideo.data.meta import ParseDataset
-from msvideo.data.transforms import ytvos_transform
-from msvideo.data.transforms.cocopolytomask import ConvertCocoPolysToMask
-from msvideo.utils.class_factory import ClassFactory, ModuleType
+from src.data.meta import Dataset
+from src.data.meta import ParseDataset
+from src.data.transforms import ytvos_transform
+from src.data.transforms.cocopolytomask import ConvertCocoPolysToMask
+from src.utils.class_factory import ClassFactory, ModuleType
 import mindspore.dataset.transforms.py_transforms as trans
 
 
@@ -82,6 +82,7 @@ class YTVOSDataset:
         return img_path_list, target
 
 
+@ClassFactory.register(ModuleType.DATASET)
 class Ytvos(Dataset):
     """
     Args:
@@ -226,7 +227,7 @@ class ParseYtvos(ParseDataset):
         root = Path(self.path)
         path = {
             "train": (root / "train/JPEGImages", root / "annotations" / 'instances_train_sub.json'),
-            "val": (root / "valid/JPEGImages", root / "annotations" / 'instances_val_sub.json'),
+            "val": (root / "val/JPEGImages", root / "annotations" / 'instances_val_sub.json'),
         }
         img_folder, ann_file = path[self.image_set]
         dataset = YTVOSDataset(img_folder, ann_file, num_frames=self.num_frames)
@@ -268,7 +269,6 @@ class DeFaultTrans(trans.PyTensorOperation):
             im_path = bytes.decode(im.tobytes())
             im = Image.open(im_path).convert('RGB')
             video.append(im)
-        label, valid = self.trans2(label, valid)
         video, box, mask, resize_shape, label, valid = self.trans(video, box, mask, resize_shape, label, valid)
         video = video.astype(np.float32)
         labels = label.astype(np.int32)

@@ -18,5 +18,4 @@ from .check_param import *
 from .class_factory import *
 from .config import *
 from .init_weight import *
-from .misc import *
 from .callbacks import *
