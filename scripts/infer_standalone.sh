@@ -14,6 +14,6 @@ DATA_PATH=$2
 MODEL_PATH=$3
 
 export PYTHONPATH=$PYTHON_PATH
-python $PYTHON_PATH/src/example/vistr_r50_infer.py --dataset_path $DATA_PATH \
+python $PYTHON_PATH/src/example/vistr_infer.py --dataset_path $DATA_PATH \
     --pretrained_model $MODEL_PATH >  eval_result.log 2>&1
 
