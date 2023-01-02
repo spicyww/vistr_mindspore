@@ -13,6 +13,6 @@ PYTHON_PATH=$1
 DATA_PATH=$2
 
 export PYTHONPATH=$PYTHON_PATH
-python $PYTHON_PATH/src/example/vistr_r50_train.py --dataset_path $DATA_PATH \
+python $PYTHON_PATH/src/example/vistr_train.py --dataset_path $DATA_PATH \
     >  train_standalone.log 2>&1
 
