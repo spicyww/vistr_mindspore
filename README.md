@@ -144,20 +144,19 @@ The infer log can be viewed in `./eval_result.log`
 
 #### BenchMark
 
-|Method          |backbone   | FPS     |     AP|    AP50   AP75   AR1    AR10|
-|----------------|-----------|---------|-------|-----------------------------|
-|DeepSORT        | ResNet-50 |   -     | 26.1  |   42.9    26.1   27.8  31.3 |
-|FEELVOS         | ResNet-50 |   -     | 26.9  |   42.0    29.7   29.9  33.4 |
-|OSMN            | ResNet-50 |   -     | 27.5  |   45.1    29.1   28.6  33.1 |
-|MaskTrack R-CNN | ResNet-50 |   20    | 30.3  |   51.1    32.6   31.0  35.5 |
-|STEm-Seg        | ResNet-50 |   -     | 30.6  |   50.7    33.5   31.6  37.1 |
-|STEm-Seg        | ResNet-101|   2.1   | 34.6  |   55.8    37.9   34.4  41.6 |
-|MaskProp        | ResNet-50 |   -     | 40.0  |    -      42.9    -     -   |
-|MaskProp        | ResNet-101|   -     | 42.5  |    -      45.6    -     -   |
-|----------------|-----------|---------|-------|-----------------------------|
-|VisTR(Pytorch)  | ResNet-50 |30.0/69.9| 36.2  |   59.8    36.9   37.2  42.4 |
-|VisTR(Pytorch)  | ResNet-101|27.7/57.7| 40.1  |   64.0    45.0   38.3  44.9 |
-|VisTR(MindSpore)| ResNet-50 |   -     | 35.8  |   60.8    37.4   36.5  42.1 |
+|Method          |backbone   | FPS     |     AP|    AP50  |AP75  |AR1   |AR10|
+|----------------|-----------|---------|-------|----------|------|------|----|
+|DeepSORT        | ResNet-50 |   -     | 26.1  |   42.9   |26.1  |27.8  |31.3|
+|FEELVOS         | ResNet-50 |   -     | 26.9  |   42.0   |29.7  |29.9  |33.4|
+|OSMN            | ResNet-50 |   -     | 27.5  |   45.1   |29.1  |28.6  |33.1|
+|MaskTrack R-CNN | ResNet-50 |   20    | 30.3  |   51.1   |32.6  |31.0  |35.5|
+|STEm-Seg        | ResNet-50 |   -     | 30.6  |   50.7   |33.5  |31.6  |37.1|
+|STEm-Seg        | ResNet-101|   2.1   | 34.6  |   55.8   |37.9  |34.4  |41.6|
+|MaskProp        | ResNet-50 |   -     | 40.0  |    -     |42.9  | -    | -  |
+|MaskProp        | ResNet-101|   -     | 42.5  |    -     |45.6  | -    | -  |
+|VisTR(Pytorch)  | ResNet-50 |30.0/69.9| 36.2  |   59.8   |36.9  |37.2  |42.4|
+|VisTR(Pytorch)  | ResNet-101|27.7/57.7| 40.1  |   64.0   |45.0  |38.3  |44.9|
+|VisTR(MindSpore)| ResNet-50 |   -     | 35.8  |   60.8   |37.4  |36.5  |42.1|
 
 
 #### Segmentation Result
