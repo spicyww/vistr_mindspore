@@ -141,6 +141,11 @@ The infer log can be viewed in `./eval_result.log`
 | Loss Function       | L1Loss,SigmoidFocalLoss,DiceLoss,CrossEntroyLoss          |
 | Train Performance   |       mask AP: 35.814%            |
 
+
+#### Segmentation Result
+
+![](./result.png)
+
 # [Citation](#contents)
 ```
 @inproceedings{wang2020end,
