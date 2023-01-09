@@ -84,7 +84,7 @@ After download dataset, then put all training and evaluation data into one direc
 ``` 
 
 ## [Model Checkpoints](#contents)
-The pretrain model(vistr_r50, vistr_r101) is trained on the youtubevos dataset for 18 epochs. It can be downloaded here: [vistr_r50.ckpt](),[vistr_r101.ckpt]()
+The pretrain model(vistr_r50, vistr_r101) is trained on the youtubevos dataset for 18 epochs. It can be downloaded here: [vistr_r50.ckpt]().
 
 ## [Running](#contents)
 
